@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PicApp</title>
+</head>
+<body>
+<div class="photo-picker">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+      <div>
+        <label for="file">Choose file to upload</label>
+        <input type="file" id="file" name="file" multiple />
+      </div>
+      <div>
+        <button>Submit</button>
+      </div>
+    </form>
+</div>
+
+</body>
+</html>
