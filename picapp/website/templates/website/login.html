@@ -1,0 +1,33 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block head-content %}
+
+{% endblock %}
+
+
+{% block body-content %}
+
+<div class="login-form">
+    <div class="message-div">
+        {% for message in messages %}
+            <h4>{{message}}</h4>
+        {% endfor %}
+    </div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <label for="username-field">Username:</label>
+        <input type="text" name="username" id="username-field" placeholder="Enter Username"/>
+        <br>
+        <label for="password-field">Password:</label>
+        <input type="password" name="password" id="password-field" placeholder="Enter Password"/>
+        <br>
+        <input type="submit" value="Login"/>
+    </form>
+    <p class="login-error-div"></p>
+    <p>Haven't signed up yet?</p>
+    <a href="/register"><button id="signUpButton">Sign Up!</button></a>
+</div>
+
+{% endblock %}
