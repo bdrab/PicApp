@@ -9,10 +9,6 @@
 
 {% block body-content %}
 
-     {% if user.is_authenticated %}
-        <h1> Hi {{user}}</h1>
-    {% endif %}
-
     <div class="photo-picker">
         <h4>Max 4MB/image</h4>
         <form method="post" enctype="multipart/form-data">
@@ -21,7 +17,7 @@
             <label for="file">Choose file to upload</label><br>
             <input type="file" id="file" name="files" accept="image/png, image/gif, image/jpeg" multiple />
             <div id="drop_zone">
-              <p>Drag one or more files to this <i>drop zone</i>.</p>
+              <p class="drop-zone-text">Drag one or more files to this <i>drop zone</i>.</p>
             </div>
           </div>
           <div>
@@ -34,4 +30,7 @@
             {% endfor %}
         </div>
     </div>
+
+
+
 {% endblock %}

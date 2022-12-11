@@ -3,14 +3,22 @@
 }
 
 #drop_zone {
-    border: 5px solid blue;
-    width: 200px;
-    height: 70px;
+    border: 5px solid red;
+    width: 600px;
+    height: 300px;
     margin: auto;
+    position: relative;
 }
+
+.drop-zone-text{
+   position: absolute;
+   top: 50%;
+   right: 50%;
+   transform: translate(50%, -50%);
+}
+
 #file{
     display: inline-block;
-    width: 100%;
 }
 
 .photo-picker{
@@ -20,7 +28,7 @@
     background: white;
     border-radius:26px;
     opacity: 1;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     overflow-y: auto;

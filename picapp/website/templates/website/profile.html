@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block head-content %}
+{% endblock %}
+
+
+{% block body-content %}
+
+    {% if user.is_authenticated %}
+        <h1> Hi {{user}}</h1>
+    {% endif %}
+
+    {% if user_photos %}
+        <div class="user-photo">
+            <ol>
+             {% for photo in user_photos %}
+                <li><a href="/{{photo.upload}}">Photo</a></li>
+             {% endfor %}
+            </ol>
+
+        </div>
+    {% endif %}
+
+{% endblock %}

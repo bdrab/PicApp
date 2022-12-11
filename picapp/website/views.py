@@ -6,12 +6,11 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-
+from django.http import FileResponse
 
 
 @csrf_exempt
 def index(request):
-    print(request.user)
     if request.method == "POST":
         print(request.FILES)
         for file in request.FILES.getlist("files"):
@@ -23,6 +22,7 @@ def index(request):
                 Image.objects.create(owner=owner, upload=file)
             except:
                 messages.error(request, 'UPLOAD. Upload failed.')
+
     return render(request, "website/index.html")
 
 
@@ -62,3 +62,19 @@ def register(request):
 def logout_user(request):
     logout(request)
     return redirect("index")
+
+
+def uploads(request, photo_name):
+    if request.user.is_authenticated:
+        img = Image.objects.get(upload="uploads/"+photo_name)
+        if img.owner == request.user:
+            return FileResponse(img.upload.open(), as_attachment=True)
+    return redirect("index")
+
+
+def profile(request):
+    context = {}
+    if request.user.is_authenticated:
+        images = Image.objects.all().filter(owner=User.objects.get(username=request.user))
+        context["user_photos"] = images
+    return render(request, "website/profile.html", context=context)
