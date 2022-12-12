@@ -8,29 +8,76 @@
 
 
 {% block body-content %}
-
-    <div class="photo-picker">
-        <h4>Max 4MB/image</h4>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-          <div class="form-fields">
-            <label for="file">Choose file to upload</label><br>
-            <input type="file" id="file" name="files" accept="image/png, image/gif, image/jpeg" multiple />
-            <div id="drop_zone">
-              <p class="drop-zone-text">Drag one or more files to this <i>drop zone</i>.</p>
+    <div class="body-content">
+        {% if user.is_authenticated %}
+            <div class="photo-picker">
+                <h4>Max 4MB/image</h4>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                  <div class="form-fields">
+                    <label for="file">Choose file to upload</label><br>
+                    <input type="file" id="file" name="files" accept="image/png, image/gif, image/jpeg" multiple />
+                    <div id="drop_zone">
+                      <p class="drop-zone-text">Drag one or more files to this <i>drop zone</i>.</p>
+                    </div>
+                  </div>
+                  <div>
+                    <button>Submit</button>
+                  </div>
+                </form>
+                <div class="message-div">
+                    {% for message in messages %}
+                        <h4>{{message}}</h4>
+                    {% endfor %}
+                </div>
             </div>
-          </div>
-          <div>
-            <button>Submit</button>
-          </div>
-        </form>
-        <div class="message-div">
-            {% for message in messages %}
-                <h4>{{message}}</h4>
-            {% endfor %}
+        {% else %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+            <div class="card h-100">
+              <img src="{% static 'img/free.png' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Free Tier</h5>
+                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ligula dolor, gravida in pellentesque.</p>
+              </div>
+              <div class="card-footer">
+                  <div class="card-footer-btn">
+                    <button type="button" class="btn btn-light">Register!</button>
+                  </div>
+              </div>
+            </div>
+            </div>
+            <div class="col">
+            <div class="card h-100">
+              <img src="{% static 'img/premium.png' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Premium Tier</h5>
+                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ligula dolor, gravida in pellentesque. </p>
+              </div>
+              <div class="card-footer">
+                  <div class="card-footer-btn">
+                    <button type="button" class="btn btn-light">Register!</button>
+                  </div>
+              </div>
+            </div>
+            </div>
+            <distv class="col">
+            <div class="card h-100">
+              <img src="{% static 'img/exclusive.png' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Exclusive Tier</h5>
+                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ligula dolor, gravida in pellentesque.</p>
+              </div>
+              <div class="card-footer">
+                  <div class="card-footer-btn">
+                    <button type="button" class="btn btn-light">Register!</button>
+                  </div>
+              </div>
+            </div>
+            </distv>
         </div>
+        {% endif %}
     </div>
-
 
 
 {% endblock %}

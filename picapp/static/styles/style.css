@@ -4,7 +4,7 @@
 
 #drop_zone {
     border: 5px solid red;
-    width: 600px;
+    width: 400px;
     height: 300px;
     margin: auto;
     position: relative;
@@ -17,25 +17,41 @@
    transform: translate(50%, -50%);
 }
 
-#file{
-    display: inline-block;
-}
 
 .photo-picker{
-    position: absolute;
     padding: 30px;
     z-index: 9999;
     background: white;
     border-radius:26px;
-    opacity: 1;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    overflow-y: auto;
-    text-align: center;
     border: 5px solid blue;
+    text-align: center;
+    margin-top: 50px;
 }
 
-.form-fields{
+.body-content{
+    margin: auto;
+    margin-top: 60px;
+    width: 575px;
+}
+
+
+.navbar{
+    margin: 20px 15% 20px 15%;
+}
+
+.login-form, .register-form{
+    margin: 30% 0 0 0;
     text-align: center;
+}
+
+.card-footer-btn{
+    text-align: center;
+    margin: auto;
+}
+
+.card-img-top{
+
+    margin: auto;
+    margin-top: 20px;
+    width: 50%;
 }

@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.http import FileResponse
-
+from sorl.thumbnail import get_thumbnail
 
 @csrf_exempt
 def index(request):

@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'website.apps.WebsiteConfig',
-    'api.apps.ApiConfig'
+    'api.apps.ApiConfig',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
