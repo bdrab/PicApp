@@ -11,19 +11,18 @@
     <div class="body-content">
         {% if user.is_authenticated %}
             <div class="photo-picker">
-                <h4>Max 4MB/image</h4>
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                  <div class="form-fields">
-                    <label for="file">Choose file to upload</label><br>
-                    <input type="file" id="file" name="files" accept="image/png, image/gif, image/jpeg" multiple />
-                    <div id="drop_zone">
-                      <p class="drop-zone-text">Drag one or more files to this <i>drop zone</i>.</p>
-                    </div>
-                  </div>
-                  <div>
-                    <button>Submit</button>
-                  </div>
+                    <label for="file">
+                        <div id="drop_zone">
+                            <p class="drop-zone-text">Drag one or more files to this <i>drop zone</i>.<br>max 4MB/image</p>
+                            <button type="submit" class="btn btn-outline-secondary btn-submit">Submit</button>
+                        </div>
+                    </label><br>
+
+                    <input class="hide" type="file" id="file" name="files" accept="image/png, image/gif, image/jpeg" multiple />
+                    <p class="chosen-files"><ul class="chosen-files-list"></ul></p>
+
                 </form>
                 <div class="message-div">
                     {% for message in messages %}
@@ -32,7 +31,13 @@
                 </div>
             </div>
         {% else %}
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="brand-div">
+
+            <p><h1>Image hosting service</h1><br>Upload, share, download!</p>
+
+        </div>
+        <div class="price-div">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
             <div class="card h-100">
               <img src="{% static 'img/free.png' %}" class="card-img-top" alt="...">
@@ -75,6 +80,7 @@
               </div>
             </div>
             </distv>
+        </div>
         </div>
         {% endif %}
     </div>

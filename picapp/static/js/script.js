@@ -1,10 +1,20 @@
 const dropDIV = document.querySelector("#drop_zone")
 const fileField = document.querySelector("#file")
+const chosenFilesList = document.querySelector(".chosen-files-list")
+
+
+
+fileField.addEventListener("change", event => {
+    chosenFilesList.textContent = "";
+    [...fileField.files].forEach(item =>{
+        const li = document.createElement("li");
+        chosenFilesList.append(li);
+        li.textContent = item["name"];
+    })
+})
 
 dropDIV.addEventListener("drop", event => {
   event.preventDefault();
-  console.log('File(s) dropped');
-
   let formData = new FormData();
   let dataTransfer = new DataTransfer();
 
@@ -18,10 +28,10 @@ dropDIV.addEventListener("drop", event => {
         }
     })
     fileField.files = dataTransfer.files;
+    fileField.dispatchEvent(new Event("change"))
   }
 })
 
 dropDIV.addEventListener("dragover", event => {
-  console.log('File(s) in drop zone');
   event.preventDefault();
 })

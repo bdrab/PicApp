@@ -10,16 +10,16 @@
 {% block body-content %}
     <div class="body-content">
         <div class="register-form">
-            <div class="message-div">
-                {% for message in messages %}
-                    <h4>{{message}}</h4>
-                {% endfor %}
-            </div>
             <form method="POST" action="">
                 {% csrf_token %}
                 {{form_register.as_p}}
                 <input type="submit" value="Register"/>
             </form>
+            <div class="message-div">
+                {% for message in messages %}
+                    <h6>{{message}}</h6>
+                {% endfor %}
+            </div>
             <p class="register-error-div"></p>
             <p>Already signed up?</p>
             <a href="/login"><button id="loginButton">Login!</button></a>
