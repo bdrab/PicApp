@@ -20,7 +20,7 @@ def index(request):
                 else:
                     owner = User.objects.get(pk=request.POST.get("user"))
                 Image.objects.create(owner=owner, upload=file)
-            except:
+            except Exception as e:
                 messages.error(request, 'UPLOAD. Upload failed.')
 
     return render(request, "website/index.html")
@@ -70,6 +70,14 @@ def uploads(request, photo_name):
         if img.owner == request.user:
             return FileResponse(img.upload.open(), as_attachment=True)
     return redirect("index")
+
+
+def delete(request, photo_pk):
+    if request.user.is_authenticated:
+        img = Image.objects.get(pk=photo_pk)
+        if img.owner == request.user:
+            img.delete()
+    return redirect("profile")
 
 
 def profile(request):

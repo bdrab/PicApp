@@ -3,7 +3,6 @@ const fileField = document.querySelector("#file")
 const chosenFilesList = document.querySelector(".chosen-files-list")
 
 
-
 fileField.addEventListener("change", event => {
     chosenFilesList.textContent = "";
     [...fileField.files].forEach(item =>{

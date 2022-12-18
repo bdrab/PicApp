@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from picapp import settings
+import os
 
 
 class Tier(models.Model):
@@ -13,3 +15,7 @@ class Tier(models.Model):
 class Image(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     upload = models.ImageField(upload_to='uploads/')
+
+    def delete(self, *args, **kwargs):
+        os.remove(str(settings.BASE_DIR) + "\\" + self.upload.name.replace("/", "\\"))
+        super(Image, self).delete(*args, **kwargs)

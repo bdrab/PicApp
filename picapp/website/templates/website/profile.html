@@ -9,21 +9,26 @@
 {% block body-content %}
     <div class="body-content">
         {% if user.is_authenticated %}
-            <h1> Hi {{user}}</h1>
-        {% endif %}
-
-        {% if user_photos %}
-            <div class="user-photo">
-                <ol>
-                 {% for photo in user_photos %}
-                    <img>
-                    <li>
-                        <a href="/{{photo.upload}}">Photo <img src="/{{photo.upload}}" alt="Photo" width="50"></a>
-                    </li>
-                 {% endfor %}
-                </ol>
-
+            <div class="profile-text">
+                <h1>{{user}}, your photos:</h1>
             </div>
+            {% if user_photos %}
+                <div class="user-photo">
+                    <ol>
+                     {% for photo in user_photos %}
+                        <img>
+                        <li>
+                            <a href="/{{photo.upload}}"><img src="/{{photo.upload}}" alt="Photo" class="users-photos"></a>
+                            <a href="/delete/{{photo.pk}}"><button class="btn btn-outline-secondary user-photo-delete-btn">✘</button></a>
+                        </li>
+                     {% endfor %}
+                    </ol>
+
+                </div>
+            {% else %}
+            <h4 class="no-photos-text"> You still have no uploaded photos.<br> Please go to the main page to start uploading photos! :)</h4>
+
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}

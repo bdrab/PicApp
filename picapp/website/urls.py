@@ -1,7 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib import admin
-from django.urls import path
 from . import views
 
 urlpatterns = [
@@ -11,5 +9,6 @@ urlpatterns = [
     path('logout/', views.logout_user, name="logout"),
     path('profile/', views.profile, name="profile"),
     path('uploads/<str:photo_name>', views.uploads, name="uploads"),
+    path('delete/<str:photo_pk>', views.delete, name="delete"),
 ]
 

@@ -10,12 +10,15 @@
 {% block body-content %}
     <div class="body-content">
         {% if user.is_authenticated %}
+            <div class="motto-div">
+                <h1>Share your image today!</h1>
+            </div>
             <div class="photo-picker">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <label for="file">
                         <div id="drop_zone">
-                            <p class="drop-zone-text">Drag one or more files to this <i>drop zone</i>.<br>max 4MB/image</p>
+                            <p class="drop-zone-text">Click here <br>or<br> drag one or more files to this <i>drop zone</i>.<br><br>max 4MB/image</p>
                             <button type="submit" class="btn btn-outline-secondary btn-submit">Submit</button>
                         </div>
                     </label><br>
@@ -32,9 +35,7 @@
             </div>
         {% else %}
         <div class="brand-div">
-
             <p><h1>Image hosting service</h1><br>Upload, share, download!</p>
-
         </div>
         <div class="price-div">
             <div class="row row-cols-1 row-cols-md-3 g-4">
