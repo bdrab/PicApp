@@ -4,6 +4,10 @@
 
 }
 
+p{
+    display: inline;
+}
+
 .hide{
     display: none;
 }
@@ -89,6 +93,7 @@ h1{
 .users-photos{
     height: 150px;
     margin-left: 30px;
+    margin-right: 30px;
 }
 
 .user-photo-delete-btn{
@@ -97,4 +102,13 @@ h1{
 
 .no-photos-text{
     margin-top: 150px;
+}
+
+.home-hyper{
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
+.user-photo li{
+    margin-top: 30px;
 }

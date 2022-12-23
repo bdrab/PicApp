@@ -1,14 +1,19 @@
 from django.shortcuts import render
 from django.shortcuts import HttpResponse, redirect
 from django.views.decorators.csrf import csrf_exempt
-from website.models import Image
+from website.models import Image, ExpiresLink
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from django.http import FileResponse
+from django.http import FileResponse, JsonResponse
 from sorl.thumbnail import get_thumbnail
+import datetime
+import time
 
+
+# TODO: if image bigger than 4MB is selected is still possible to be sent to server,
+#  even if it is not shown below the drop zone.
 @csrf_exempt
 def index(request):
     if request.method == "POST":
@@ -22,7 +27,7 @@ def index(request):
                 Image.objects.create(owner=owner, upload=file)
             except Exception as e:
                 messages.error(request, 'UPLOAD. Upload failed.')
-
+        messages.info(request, 'UPLOAD. Successful')
     return render(request, "website/index.html")
 
 
@@ -86,3 +91,25 @@ def profile(request):
         images = Image.objects.all().filter(owner=User.objects.get(username=request.user))
         context["user_photos"] = images
     return render(request, "website/profile.html", context=context)
+
+
+def expires_link_generate(request, photo_pk):
+    response = {}
+    if request.user.is_authenticated:
+        new_link = ExpiresLink.objects.create(owner=User.objects.get(username=request.user),
+                                              image=Image.objects.get(pk=photo_pk),
+                                              time=120)
+        response["web_address"] = f"http://192.168.0.136/e/{new_link.link}"
+    return JsonResponse(response)
+
+
+def expires_link_open(request, expires_link):
+    try:
+        expires_link = ExpiresLink.objects.get(link=expires_link)
+    except Exception:
+        return redirect("index")
+    else:
+        if expires_link.created.timestamp() + expires_link.time >= time.time():
+            image = expires_link.image
+            return FileResponse(image.upload.open(), as_attachment=True)
+    return redirect("index")

@@ -3,30 +3,33 @@
 
 
 {% block head-content %}
+    <script defer src="{% static 'js/script_profile.js' %}" ></script>
 {% endblock %}
 
 
 {% block body-content %}
     <div class="body-content">
         {% if user.is_authenticated %}
-            <div class="profile-text">
-                <h1>{{user}}, your photos:</h1>
-            </div>
             {% if user_photos %}
+                <div class="profile-text">
+                    <h1>{{user}}, your photos:</h1>
+                </div>
                 <div class="user-photo">
                     <ol>
                      {% for photo in user_photos %}
-                        <img>
                         <li>
                             <a href="/{{photo.upload}}"><img src="/{{photo.upload}}" alt="Photo" class="users-photos"></a>
-                            <a href="/delete/{{photo.pk}}"><button class="btn btn-outline-secondary user-photo-delete-btn">✘</button></a>
+                            <p>{{photo.name}}</p><br>
+                            <a href="/delete/{{photo.pk}}"><button class="btn btn-outline-secondary user-photo-delete-btn">Delete ✘</button></a>
+                            <button class="btn btn-outline-secondary generate-link-btn" data-photo="{{photo.pk}}">Generate Link</button>
                         </li>
                      {% endfor %}
                     </ol>
 
                 </div>
             {% else %}
-            <h4 class="no-photos-text"> You still have no uploaded photos.<br> Please go to the main page to start uploading photos! :)</h4>
+            <h4 class="no-photos-text"> You still have no uploaded photos.<br>
+                Please go to the <a href="/" class="home-hyper">home page</a> to start uploading photos! :)</h4>
 
             {% endif %}
         {% endif %}

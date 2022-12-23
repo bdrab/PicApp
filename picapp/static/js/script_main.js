@@ -1,14 +1,16 @@
 const dropDIV = document.querySelector("#drop_zone")
 const fileField = document.querySelector("#file")
 const chosenFilesList = document.querySelector(".chosen-files-list")
-
+const FILE_SIZE = 3000000
 
 fileField.addEventListener("change", event => {
     chosenFilesList.textContent = "";
     [...fileField.files].forEach(item =>{
-        const li = document.createElement("li");
-        chosenFilesList.append(li);
-        li.textContent = item["name"];
+        if (item.size <= FILE_SIZE){
+            const li = document.createElement("li");
+            chosenFilesList.append(li);
+            li.textContent = item["name"];
+        }
     })
 })
 
@@ -22,7 +24,7 @@ dropDIV.addEventListener("drop", event => {
         const file = item.getAsFile();
         if ((file.type === "image/png" ||
             file.type === "image/gif" ||
-            file.type === "image/jpeg") && file.size <= 3000000){
+            file.type === "image/jpeg") && file.size <= FILE_SIZE){
                 dataTransfer.items.add(file);
         }
     })
