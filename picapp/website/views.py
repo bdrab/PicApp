@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.shortcuts import HttpResponse, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -92,13 +94,15 @@ def profile(request):
         context["user_photos"] = images
     return render(request, "website/profile.html", context=context)
 
-
+@csrf_exempt
 def expires_link_generate(request, photo_pk):
     response = {}
+    data = json.loads(request.body)
+    time_link = data["time"]
     if request.user.is_authenticated:
         new_link = ExpiresLink.objects.create(owner=User.objects.get(username=request.user),
                                               image=Image.objects.get(pk=photo_pk),
-                                              time=120)
+                                              time=time_link)
         response["web_address"] = f"http://192.168.0.136/e/{new_link.link}"
     return JsonResponse(response)
 

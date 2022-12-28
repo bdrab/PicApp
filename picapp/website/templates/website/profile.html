@@ -20,8 +20,11 @@
                         <li>
                             <a href="/{{photo.upload}}"><img src="/{{photo.upload}}" alt="Photo" class="users-photos"></a>
                             <p>{{photo.name}}</p><br>
+                            <div class="input-group mb-3">
+                              <input type="text" class="form-control" placeholder="Time of link activeness (seconds)" id="generate-link-time-{{photo.pk}}">
+                              <button class="btn btn-outline-secondary generate-link-btn" data-photo="{{photo.pk}}" id="generate-link-btn-{{photo.pk}}">Generate Link</button>
+                            </div>
                             <a href="/delete/{{photo.pk}}"><button class="btn btn-outline-secondary user-photo-delete-btn">Delete ✘</button></a>
-                            <button class="btn btn-outline-secondary generate-link-btn" data-photo="{{photo.pk}}">Generate Link</button>
                         </li>
                      {% endfor %}
                     </ol>
