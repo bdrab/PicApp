@@ -1,16 +1,13 @@
 import json
-
 from django.shortcuts import render
 from django.shortcuts import HttpResponse, redirect
 from django.views.decorators.csrf import csrf_exempt
-from website.models import Image, ExpiresLink
+from website.models import Image, ExpiresLink, ThumbnailImage
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.http import FileResponse, JsonResponse
-from sorl.thumbnail import get_thumbnail
-import datetime
 import time
 
 
@@ -19,15 +16,16 @@ import time
 @csrf_exempt
 def index(request):
     if request.method == "POST":
-        print(request.FILES)
         for file in request.FILES.getlist("files"):
             try:
                 if request.user.is_authenticated:
                     owner = User.objects.get(username=request.user)
                 else:
                     owner = User.objects.get(pk=request.POST.get("user"))
-                Image.objects.create(owner=owner, upload=file)
+                image = Image(owner=owner, original=file)
+                image.save(size=(300, 600))
             except Exception as e:
+                print(e)
                 messages.error(request, 'UPLOAD. Upload failed.')
         messages.info(request, 'UPLOAD. Successful')
     return render(request, "website/index.html")
@@ -71,12 +69,27 @@ def logout_user(request):
     return redirect("index")
 
 
-def uploads(request, photo_name):
+def originals(request, photo_name):
     if request.user.is_authenticated:
-        img = Image.objects.get(upload="uploads/"+photo_name)
+        img = Image.objects.get(original="originals/"+photo_name)
         if img.owner == request.user:
-            return FileResponse(img.upload.open(), as_attachment=True)
+            return FileResponse(img.original.open(), as_attachment=True)
     return redirect("index")
+
+
+def originals_thumbs(request, photo_name):
+    if request.user.is_authenticated:
+        img = Image.objects.get(thumbnail="originals/thumbs/"+photo_name)
+        if img.owner == request.user:
+            return FileResponse(img.thumbnail.open(), as_attachment=True)
+    return redirect("index")
+
+def thumbs(request, photo_name):
+    try:
+        thumb = ThumbnailImage.objects.get(thumbnail="thumbs/"+photo_name)
+        return FileResponse(thumb.thumbnail.open(), as_attachment=True)
+    except Exception:
+        return redirect("index")
 
 
 def delete(request, photo_pk):
@@ -90,7 +103,11 @@ def delete(request, photo_pk):
 def profile(request):
     context = {}
     if request.user.is_authenticated:
-        images = Image.objects.all().filter(owner=User.objects.get(username=request.user))
+        images = []
+        new_images = Image.objects.all().filter(owner=User.objects.get(username=request.user))
+        for new_image in new_images:
+            thumbnail = ThumbnailImage.objects.select_related().filter(img = new_image.pk)
+            images.append([new_image, thumbnail])
         context["user_photos"] = images
     return render(request, "website/profile.html", context=context)
 
@@ -115,5 +132,5 @@ def expires_link_open(request, expires_link):
     else:
         if expires_link.created.timestamp() + expires_link.time >= time.time():
             image = expires_link.image
-            return FileResponse(image.upload.open(), as_attachment=True)
+            return FileResponse(image.original.open(), as_attachment=True)
     return redirect("index")
