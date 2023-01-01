@@ -24,7 +24,7 @@
                                 <input type="text" class="form-control" placeholder="Time of link activeness (seconds)" id="generate-link-time-{{record.0.pk}}">
                                 <button class="btn btn-outline-secondary generate-link-btn" data-photo="{{record.0.pk}}" id="generate-link-btn-{{record.0.pk}}">Generate Link</button>
                             </div>
-                            <p class="generate-link-p-{{record.0.pk}}"></p>
+                            <p class="generate-link-p-{{record.0.pk}}"></p><br>
                             <button class="btn btn-outline-secondary show-thumbnails-link" data-photo="{{record.0.pk}}">Show Thumbnails Links</button>
                             <a href="/delete/{{record.0.pk}}"><button class="btn btn-outline-secondary user-photo-delete-btn">Delete ✘</button></a>
                             <div class="thumbnails-div-{{record.0.pk}} hide">
@@ -38,7 +38,7 @@
 
                 </div>
             {% else %}
-            <h4 class="no-photos-text"> You still have no uploaded photos.<br>
+            <h4 class="no-photos-text"> {{user}}, you still have no uploaded photos.<br>
                 Please go to the <a href="/" class="home-hyper">home page</a> to start uploading photos! :)</h4>
 
             {% endif %}

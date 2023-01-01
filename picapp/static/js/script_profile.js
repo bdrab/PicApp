@@ -6,7 +6,9 @@ if (userPhotoDiv){
     userPhotoDiv.addEventListener("click",  async (event) => {
         if ([...event.target.classList].includes("generate-link-btn")){
             const photo = event.target.dataset["photo"];
-            const data = { time: Number(document.getElementById("generate-link-time-" + photo).value) };
+            const linkTime = Number(document.getElementById("generate-link-time-" + photo).value);
+            if(linkTime){
+            const data = { time: linkTime};
             let res = await fetch('http://192.168.0.136/exp-link/' + photo, {
               method: 'POST', // or 'PUT'
               headers: {
@@ -16,8 +18,9 @@ if (userPhotoDiv){
             })
             const response = await res.json();
             const link = response["web_address"]
-            document.querySelector(".generate-link-p-"+photo) = link
+            document.querySelector(".generate-link-p-"+photo).textContent = link
             console.log(link);
+            }
         }
 
         if ([...event.target.classList].includes("show-thumbnails-link")){

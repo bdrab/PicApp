@@ -12,13 +12,15 @@ class Tier(models.Model):
     description = models.TextField(null=True, blank=True)
     expiring_links = models.BooleanField(default=False)
     original_photo = models.BooleanField(default=False)
+    thumbnails = models.JSONField(default={})
+
     def __str__(self):
         return str(self.name) + "" + str(self.description)
 
 
-# class Profile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     tier = models.ForeignKey(Tier, null=True, on_delete=models.SET_NULL)
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    tier = models.ForeignKey(Tier, null=True, on_delete=models.SET_NULL)
 
 
 # TODO: image is still open after creation and cannot be easily deleted.
