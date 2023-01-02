@@ -44,10 +44,18 @@ p{
 
 .btn-submit{
    position: absolute;
-   top: 85%;
+   top: 90%;
    right: 50%;
    transform: translate(50%, -50%);
 }
+
+.upload-message-div{
+   position: absolute;
+   top: 78%;
+   right: 50%;
+   transform: translate(50%, -50%);
+}
+
 
 .body-content{
     margin: auto;

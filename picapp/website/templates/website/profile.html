@@ -20,16 +20,18 @@
                         <li>
                             <img src="/{{record.0.thumbnail}}" alt="Photo" class="users-photos">
                             <p>{{record.0.name}}.{{record.0.extension}}</p><br>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Time of link activeness (seconds)" id="generate-link-time-{{record.0.pk}}">
-                                <button class="btn btn-outline-secondary generate-link-btn" data-photo="{{record.0.pk}}" id="generate-link-btn-{{record.0.pk}}">Generate Link</button>
-                            </div>
-                            <p class="generate-link-p-{{record.0.pk}}"></p><br>
-                            <button class="btn btn-outline-secondary show-thumbnails-link" data-photo="{{record.0.pk}}">Show Thumbnails Links</button>
+                            {% if user.profile.tier.expiring_links %}
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Time of link activeness (seconds)" id="generate-link-time-{{record.0.pk}}">
+                                    <button class="btn btn-outline-secondary generate-link-btn" data-photo="{{record.0.pk}}" id="generate-link-btn-{{record.0.pk}}">Generate Link</button>
+                                </div>
+                                    <p class="generate-link-p-{{record.0.pk}}"></p><br>
+                            {% endif %}
+                                <button class="btn btn-outline-secondary show-thumbnails-link" data-photo="{{record.0.pk}}">Show Thumbnails Links</button>
                             <a href="/delete/{{record.0.pk}}"><button class="btn btn-outline-secondary user-photo-delete-btn">Delete ✘</button></a>
                             <div class="thumbnails-div-{{record.0.pk}} hide">
                                 {% for thumbnail in record.1 %}
-                                    <p><a href="/{{thumbnail.thumbnail}}">Photo {{thumbnail.size_height}}px height</a></p><br>
+                                    <p><a href="/thumbs/{{thumbnail.thumbnail}}">Photo {{thumbnail.size_height}}px height</a></p><br>
                                 {% endfor %}
                             </div>
                         </li>

@@ -7,6 +7,7 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 import uuid
 
+
 class Tier(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField(null=True, blank=True)
@@ -15,7 +16,7 @@ class Tier(models.Model):
     thumbnails = models.JSONField(default={})
 
     def __str__(self):
-        return str(self.name) + "" + str(self.description)
+        return str(self.name) + " " + str(self.description)
 
 
 class Profile(models.Model):
@@ -23,8 +24,6 @@ class Profile(models.Model):
     tier = models.ForeignKey(Tier, null=True, on_delete=models.SET_NULL)
 
 
-# TODO: image is still open after creation and cannot be easily deleted.
-# TODO: add delete function for image  thumbs
 class Image(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     name = models.CharField(max_length=20, default="name")
@@ -35,9 +34,6 @@ class Image(models.Model):
     def delete(self, *args, **kwargs):
         os.remove(str(settings.BASE_DIR) + "\\" + self.original.name.replace("/", "\\"))
         os.remove(str(settings.BASE_DIR) + "\\" + self.thumbnail.name.replace("/", "\\"))
-        thumbnails = ThumbnailImage.objects.all().filter(img=self)
-        for thumbnail in thumbnails:
-            os.remove(str(settings.BASE_DIR) + "\\" + thumbnail.thumbnail.name.replace("/", "\\"))
         super(Image, self).delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):
@@ -79,9 +75,7 @@ class Image(models.Model):
         if not image_thumbnail:
             ThumbnailImage.objects.create(owner= self.owner,
                                           img=self,
-                                          size_height=size[1],
-                                          thumbnail=ContentFile(temp_thumbnail.read(),
-                                                                name=thumb_filename))
+                                          size_height=size[1])
         else:
             self.thumbnail.save(thumb_filename, ContentFile(temp_thumbnail.read()), save=False)
         temp_thumbnail.close()
@@ -91,7 +85,8 @@ class ThumbnailImage(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     img = models.ForeignKey(Image, null=True, on_delete=models.CASCADE)
     size_height = models.IntegerField(blank=False, null=False)
-    thumbnail = models.ImageField(upload_to='thumbs/', editable=True, default="none")
+    thumbnail = models.CharField(max_length=36, default=uuid.uuid4)
+
 
 
 class ExpiresLink(models.Model):
