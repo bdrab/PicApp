@@ -1,7 +1,7 @@
 const dropDIV = document.querySelector("#drop_zone")
 const fileField = document.querySelector("#file")
 const chosenFilesList = document.querySelector(".chosen-files-list")
-const FILE_SIZE = 3000000
+const FILE_SIZE = 4194304
 
 if(fileField){
     fileField.addEventListener("change", event => {

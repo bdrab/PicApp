@@ -10,7 +10,7 @@ if (userPhotoDiv){
             if(linkTime){
             const data = { time: linkTime};
             let res = await fetch('http://192.168.0.136/exp-link/' + photo, {
-              method: 'POST', // or 'PUT'
+              method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
