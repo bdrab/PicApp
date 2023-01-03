@@ -13,7 +13,7 @@ class Tier(models.Model):
     description = models.TextField(null=True, blank=True)
     expiring_links = models.BooleanField(default=False)
     original_photo = models.BooleanField(default=False)
-    thumbnails = models.JSONField(default={})
+    thumbnails = models.JSONField(default=dict)
 
     def __str__(self):
         return str(self.name) + " " + str(self.description)
