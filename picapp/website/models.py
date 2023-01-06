@@ -42,17 +42,18 @@ class Image(models.Model):
         self.extension = file[1]
 
         super(Image, self).save()
+        self.create_thumbnail((150, 150))
 
-        self.create_thumbnail((150, 150), True)
         if kwargs["size"]:
             sizes = kwargs["size"]
             for size in sizes:
-                self.create_thumbnail((size, size))
-
+                ThumbnailImage.objects.create(owner= self.owner,
+                                              img=self,
+                                              size_height=size)
         super(Image, self).save()
 
 
-    def create_thumbnail(self, size, image_thumbnail = False):
+    def create_thumbnail(self, size):
         image = IM.open(str(self.original))
         image.thumbnail(size, IM.ANTIALIAS)
 
@@ -71,13 +72,7 @@ class Image(models.Model):
         temp_thumbnail = BytesIO()
         image.save(temp_thumbnail, file_type)
         temp_thumbnail.seek(0)
-
-        if not image_thumbnail:
-            ThumbnailImage.objects.create(owner= self.owner,
-                                          img=self,
-                                          size_height=size[1])
-        else:
-            self.thumbnail.save(thumb_filename, ContentFile(temp_thumbnail.read()), save=False)
+        self.thumbnail.save(thumb_filename, ContentFile(temp_thumbnail.read()), save=False)
         temp_thumbnail.close()
         image.close()
 
