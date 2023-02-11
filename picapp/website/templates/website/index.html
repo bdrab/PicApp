@@ -14,8 +14,6 @@
                 <h1>Share your image today!</h1>
             </div>
             <div class="photo-picker">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
                     <label for="file">
                         <div id="drop_zone">
                             <p class="drop-zone-text">Click here <br>or<br> drag one or more files to this <i>drop zone</i>.<br><br>max 4MB/image</p>
@@ -27,9 +25,8 @@
                             <button type="submit" class="btn btn-outline-secondary btn-submit">Submit</button>
                         </div>
                     </label><br>
-                    <input class="hide" type="file" id="file" name="files" accept="image/png, image/gif, image/jpeg" multiple />
+                    <input class="hide" type="file" id="file" name="photo" accept="image/png, image/gif, image/jpeg" multiple />
                     <p class="chosen-files"><ul class="chosen-files-list"></ul></p>
-                </form>
             </div>
         {% else %}
         <div class="brand-div">

@@ -13,7 +13,7 @@ urlpatterns = [
     path('thumbs/<str:photo_name>', views.thumbs, name="thumbs"),
     path('delete/<str:photo_pk>', views.delete, name="delete"),
     path('exp-link/<str:photo_pk>', views.expires_link_generate, name="expires-link-generate"),
-    path('e/<str:expires_link>', views.expires_link_open, name="expires-link-open")
+    path('e/<str:expires_link>', views.expires_link_open, name="expires-link-open"),
 ]
 
 

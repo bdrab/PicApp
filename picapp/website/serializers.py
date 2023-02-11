@@ -1,13 +1,40 @@
 from rest_framework import serializers
-from website.models import Image
+from website.models import Image, ThumbnailImage
 
 class ImageSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField(read_only=True)
+    extension = serializers.SerializerMethodField(read_only=True)
+    thumbnail = serializers.SerializerMethodField(read_only=True)
+    owner = serializers.SerializerMethodField(read_only=True)
+    thumbnails = serializers.SerializerMethodField(read_only=True)
+
+    photo = serializers.ImageField(source="original")
     class Meta:
         model = Image
         fields = [
             'name',
             'extension',
-            'original',
+            'photo',
             'thumbnail',
             'owner',
+            'thumbnails',
         ]
+
+    def get_name(self, obj):
+        return obj.name
+
+    def get_extension(self, obj):
+        return obj.extension
+
+    def get_thumbnail(self, obj):
+        return f"http://192.168.0.136/{str(obj.thumbnail)}"
+
+    def get_owner(self, obj):
+        return obj.owner.username
+
+    def get_thumbnails(self, obj):
+        thumbs_links = []
+        thumbs = ThumbnailImage.objects.all().filter(owner=obj.owner).filter(img=obj)
+        for thumb in thumbs:
+            thumbs_links.append(f"http://192.168.0.136/thumbs/{thumb.thumbnail}")
+        return thumbs_links

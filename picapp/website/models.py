@@ -43,13 +43,11 @@ class Image(models.Model):
 
         super(Image, self).save()
         self.create_thumbnail((150, 150))
-
-        if kwargs["size"]:
-            sizes = kwargs["size"]
-            for size in sizes:
-                ThumbnailImage.objects.create(owner= self.owner,
-                                              img=self,
-                                              size_height=size)
+        sizes = self.owner.profile.tier.thumbnails["thumbnail"]
+        for size in sizes:
+            ThumbnailImage.objects.create(owner= self.owner,
+                                          img=self,
+                                          size_height=size)
         super(Image, self).save()
 
 

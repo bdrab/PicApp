@@ -15,26 +15,7 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 
 
-@csrf_exempt
 def index(request):
-    status = False
-    if request.method == "POST":
-        for file in request.FILES.getlist("files"):
-            if file.size <= 4194304:
-                status = True
-                try:
-                    if request.user.is_authenticated:
-                        owner = User.objects.get(username=request.user)
-                    else:
-                        owner = User.objects.get(pk=request.POST.get("user"))
-                    image = Image(owner=owner, original=file)
-                    sizes = list(owner.profile.tier.thumbnails["thumbnail"])
-                    image.save(size=sizes)
-                except Exception as e:
-                    print(e)
-                    messages.error(request, 'Upload failed.')
-        if status:
-            messages.info(request, 'Successfully uploaded.')
     return render(request, "website/index.html")
 
 
