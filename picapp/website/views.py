@@ -124,28 +124,13 @@ def profile(request):
     if request.user.is_authenticated:
         images = []
         user = User.objects.get(username=request.user)
-        new_images = Image.objects.all().filter(owner=user)
+        new_images = Image.objects.all().filter(owner=user).order_by('-id')
         for new_image in new_images:
             thumbnail = ThumbnailImage.objects.select_related().filter(img = new_image.pk)
             images.append([new_image, thumbnail])
         context["user_photos"] = images
         context["user"] = user
     return render(request, "website/profile.html", context=context)
-
-
-@csrf_exempt
-def expires_link_generate(request, photo_pk):
-    response = {}
-    time_link = json.loads(request.body)["time"]
-    if request.user.is_authenticated:
-        user = User.objects.get(username=request.user)
-        if user.profile.tier.expiring_links:
-            new_link = ExpiresLink.objects.create(owner=user,
-                                                  image=Image.objects.get(pk=photo_pk),
-                                                  time=time_link)
-            response["web_address"] = f"http://192.168.0.136/e/{new_link.link}"
-    return JsonResponse(response)
-
 
 def expires_link_open(request, expires_link):
     try:
