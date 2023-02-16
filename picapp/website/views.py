@@ -18,6 +18,19 @@ from django.core.files.base import ContentFile
 def index(request):
     return render(request, "website/index.html")
 
+def profile(request):
+    context = {}
+    if request.user.is_authenticated:
+        images = []
+        user = User.objects.get(username=request.user)
+        new_images = Image.objects.all().filter(owner=user).order_by('-id')
+        for new_image in new_images:
+            thumbnail = ThumbnailImage.objects.select_related().filter(img = new_image.pk)
+            images.append([new_image, thumbnail])
+        context["user_photos"] = images
+        context["user"] = user
+        return render(request, "website/profile.html", context=context)
+    return redirect("index")
 
 def login_user(request):
     if request.method == "POST":
@@ -40,7 +53,7 @@ def login_user(request):
     return render(request, "website/login.html")
 
 
-def register(request):
+def register_user(request):
     form_register = UserCreationForm()
     form_profile = CreateProfileForm()
     context = {"form_register": form_register,
@@ -77,7 +90,15 @@ def originals_thumbs(request, photo_name):
             return FileResponse(img.thumbnail.open(), as_attachment=True)
     return redirect("index")
 
-def thumbs(request, photo_name):
+
+def delete_image(request, photo_pk):
+    if request.user.is_authenticated:
+        img = Image.objects.get(pk=photo_pk)
+        if img.owner == request.user:
+            img.delete()
+    return redirect("profile")
+
+def thumbs_open(request, photo_name):
     try:
         thumb = ThumbnailImage.objects.get(thumbnail=photo_name)
         image_db = thumb.img
@@ -110,27 +131,6 @@ def thumbs(request, photo_name):
     except Exception:
         return redirect("index")
 
-
-def delete(request, photo_pk):
-    if request.user.is_authenticated:
-        img = Image.objects.get(pk=photo_pk)
-        if img.owner == request.user:
-            img.delete()
-    return redirect("profile")
-
-
-def profile(request):
-    context = {}
-    if request.user.is_authenticated:
-        images = []
-        user = User.objects.get(username=request.user)
-        new_images = Image.objects.all().filter(owner=user).order_by('-id')
-        for new_image in new_images:
-            thumbnail = ThumbnailImage.objects.select_related().filter(img = new_image.pk)
-            images.append([new_image, thumbnail])
-        context["user_photos"] = images
-        context["user"] = user
-    return render(request, "website/profile.html", context=context)
 
 def expires_link_open(request, expires_link):
     try:
